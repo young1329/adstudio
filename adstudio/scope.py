@@ -50,7 +50,7 @@ class Scope(Device):
             print(emsg)
             
     def SCOPE_trigsrc(self,ts):
-        trigsrc = {'none':c_byte(0),'pc':c_byte(1),'detectoranalogin':c_byte(2),'detectordigitalin':c_byte(3),'analogin':c_byte(4),'digitalin':c_byte(5)}
+        trigsrc = {'none':c_ubyte(0),'pc':c_ubyte(1),'detectoranalogin':c_ubyte(2),'detectordigitalin':c_ubyte(3),'analogin':c_ubyte(4),'digitalin':c_ubyte(5)}
         try:
             Eflag = dwf.FDwfAnalogInTriggerSourceSet(self.hdwf[self.idx],trigsrc[ts])            
             if (not Eflag):
@@ -139,7 +139,7 @@ class Scope(Device):
         try:            
             while (sts.value != 2 ):
                 Eflag = dwf.FDwfAnalogInStatus(self.hdwf[self.idx],True,byref(sts))
-                #print "STS ="+str(sts.value)+"\n"
+                # print("STS ="+str(sts.value)+"\n")
                 if (not Eflag):
                     raise ErrMsg("Failed to scope get data\n")
                 time.sleep(0.001)
@@ -152,14 +152,4 @@ class Scope(Device):
                 raise ErrMsg("\n Reading Buffer Error in Scope\n")
         except ErrMsg as emsg:
             print(emsg)
-        #print "Finished"
-      
-    def SCOPE_pctrig(self):
-        try:
-            Eflag = dwf.FDwfDeviceTriggerPC(self.hdwf[self.idx])
-            #print "pc triggered\n"
-            if (not Eflag):
-                raise ErrMsg("PC trigger error\n")
-        except ErrMsg as emsg:
-            print(emsg)
-        time.sleep(1)    
+        #print("Finished\n")

@@ -23,6 +23,7 @@ class Power(Device):
         self.crntVP = c_double()
         self.crntVN = c_double()
         self.crntVCC = c_double()
+        self.pwrLimit = c_double()
         
         Device.__init__(self,idx)
         #Vmtr Variables
@@ -127,15 +128,13 @@ class Power(Device):
         except ErrMsg as emsg:
             print(emsg)
 			
-    def set_power_limit(self,chnl,pwr):
+    def get_power_limit(self,chnl):
         try:
             if not(chnl in ('V+-')):
                 raise ErrMsg("analog IO : current can be set on 4(V+-) channel only")
-            if (chnl == 'VP+' and pwr<0):
-                raise ErrMsg("V+- needs positive power level")
-            Eflag = dwf.FDwfAnalogIOChannelNodeSet(self.hdwf[self.idx],c_int(channels[chnl]),c_int(0),c_double(pwr))            
+            Eflag = dwf.FDwfAnalogIOChannelNodeStatus(self.hdwf[self.idx],c_int(channels[chnl]),c_int(0),byref(self.pwrLimit))            
             if (not Eflag):
-                raise ErrMsg("Channel(%s) current set error"%chnl)            
+                raise ErrMsg("Channel(%s) get limit error"%chnl)            
         except ErrMsg as emsg:
             print(emsg)    
 	

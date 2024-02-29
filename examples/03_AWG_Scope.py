@@ -17,6 +17,7 @@ from adstudio import AWG
 from adstudio import Scope
 
 import time
+import numpy as np
 import matplotlib.pyplot as plt
 
 pwr=Power()
@@ -54,23 +55,31 @@ sp.SCOPE_init()
 # define channel 1 condition
 sp.SCOPE_enable('SCOPE1')
 sp.SCOPE_offset('SCOPE1',0)
-sp.SCOPE_range('SCOPE1',5.0)
-
-
-sp.SCOPE_pctrig() # Triggering
-time.sleep(2)
-
+sp.SCOPE_range('SCOPE1',10.0)
+sp.SCOPE_trigsrc('detectoranalogin')
+sp.SCOPE_trigtype('edge')
 sp.SCOPE_configure() # Armed
-
+print('Scope Configured\n')
+awg.AWG_pctrig() # Triggering
+# sp.SCOPE_pctrig()
+time.sleep(1)
 sp.SCOPE_get_data()  # Wait to measure the scope data
 
-
-Ch1V = sp.Ch1Voltages
+fs=sp.sampling_freq.value # sampling frequency
+N=sp.num_of_samples.value # number of samples
+Ch1V = np.array(sp.Ch1Voltages)
+ts = np.arange(0,N/fs,1/fs)
 print('Finised the measurement. Close device\n')
 
 pwr.CloseAll()
 
-plt.plot(sp.Ch1Voltages)
+del pwr,awg,sp
+
+plt.plot(ts,Ch1V,label='Scope 1')
+plt.xlabel('Time(sec)')
+plt.ylabel('Volt(V)')
+plt.grid('both')
+plt.legend()
 plt.show()
 
-del pwr,awg,sp
+
