@@ -1,14 +1,15 @@
-Library for EEBoard
+Library for Analog Discoverty Studio
 
 Digilentinc - Waveforms must be installed first
 
-copy "eeboard" to any folder you like ex) /home/eeboard
-and set PYTHONPATH environment variable
-ex) export PYTHONPAHT=$PYTHONPAHT;/home/eeboard   on ubuntu
+change the sys.path.append( to the foloder )
+Ex) First two lines
+import sys
+sys.path.append("C:/vscode_ws/ws_python/adstudio")
 
 .
 |-- Readme.txt   : this file
-|-- eeboard
+|-- adstudio
 |   |-- __init__.py : package init file
 |   |-- awg.py : AWG object
 |   |-- device.py : Electronic Explorer board base class
@@ -24,5 +25,4 @@ ex) export PYTHONPAHT=$PYTHONPAHT;/home/eeboard   on ubuntu
     |-- 03_AWG_Scope.py: AWG and Scope test
     |-- 04_DigitalIO.py : Static digital IO test
     |-- 05_Pattern_Logic03.py : 4bit counter and meausre with 8-bit 1000 samples with Single Acquisition Mode
-    |-- 06_Pattern04.py D22 and D21 as output terminal, 1khz clock 50% duty output
-    `-- 07_Pattern
+    `-- 06_Pattern04.py D10 and D09 as output terminal, 1khz clock 50% duty output
